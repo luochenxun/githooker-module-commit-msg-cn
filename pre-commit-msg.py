@@ -42,7 +42,11 @@ def hook():
 
 def _initGitInfo():
     global pCommitMessage, pProjectName, pProjectPath
-    pCommitMessage = os.popen('git log -1 --pretty=format:"%s"').read()
+    try:
+        commitEditFile = open('.git/COMMIT_EDITMSG')
+        pCommitMessage = commitEditFile.readline();
+    except Exception as e:
+        pass
     pProjectName = os.popen(
         "git remote -v | sed -n \'1 s|\(.*\)/\(.*\).git\(.*\)|\\2|g p\'").read().replace("\n", "")
     pProjectPath = os.popen("pwd").read().replace("\n", "")
